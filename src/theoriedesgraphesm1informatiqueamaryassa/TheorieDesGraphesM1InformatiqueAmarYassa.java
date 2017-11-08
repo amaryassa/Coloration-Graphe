@@ -16,6 +16,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
@@ -41,6 +42,15 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
  
 
     circle.setCursor(Cursor.HAND);
+    
+     circle.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent t) {
+                circle.setFill(Color.YELLOW);
+                System.out.println("id: "+circle.getId());
+            }
+        });
 
     circle.setOnMousePressed((t) -> {
       orgSceneX = t.getSceneX();
