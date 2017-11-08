@@ -36,7 +36,7 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     
      private Circle createCircle(double x, double y, double r, Color color){
      Circle circle = new Circle(x, y, r, color);
-    
+     circle.setId(a+"");
      CircleMap.put(a, circle);
      a++;
  
@@ -70,7 +70,8 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
       orgSceneX = t.getSceneX();
       orgSceneY = t.getSceneY();
-    });  
+    }); 
+   circle.toFront();
      return circle;
      }
      
