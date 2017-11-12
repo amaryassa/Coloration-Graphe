@@ -32,7 +32,9 @@ import javafx.stage.Stage;
 public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     double orgSceneX, orgSceneY;
     int a=0;
+    int b=0;
     Map<Integer,Circle> CircleMap = new HashMap<Integer,Circle>();
+    Map<Integer,Circle> CircleSelect = new HashMap<Integer,Circle>();
     
      private Circle createCircle(double x, double y, double r, Color color){
      Circle circle = new Circle(x, y, r, color);
@@ -76,8 +78,19 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
      }
      
      private Line connect(Circle c1, Circle c2){
-        Line line = new Line();
          
+          String idLine=c1.getId()+"_"+c2.getId();
+    Line line = new Line();
+    line.startXProperty().bind(c1.centerXProperty());
+    line.startYProperty().bind(c1.centerYProperty());
+    line.endXProperty().bind(c2.centerXProperty());
+    line.endYProperty().bind(c2.centerYProperty());
+    line.setStrokeWidth(1);
+    //line.setStrokeLineCap(StrokeLineCap.BUTT);
+    //line.getStrokeDashArray().setAll(2.0, 5.0);
+    
+    line.setId(idLine);
+      System.out.println("idLine: "+line.getId());
         return line;
      }
   @Override
@@ -95,7 +108,7 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
  Button b1 = new Button("B1");
     b1.setId("b1");
     b1.getStyleClass().add("b1");
-     b1.setOnAction(new EventHandler<ActionEvent>() { 
+    b1.setOnAction(new EventHandler<ActionEvent>() { 
             @Override
             public void handle(ActionEvent event) {
                
@@ -105,12 +118,51 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
                 Circle cercle = createCircle(X, Y, 30, Color.RED);
                 root.getChildren().add(cercle);
                 cercle.toFront();
+                  cercle.setOnMouseClicked(new EventHandler<MouseEvent>()
+        {
+            @Override
+            public void handle(MouseEvent t) {
+                CircleSelect.put(b, cercle);
+                    cercle.setFill(Color.YELLOW);
+                    b++;
+               if (CircleSelect.size()==2){
+                   Line line1 = connect(CircleSelect.get(0), CircleSelect.get(1));
+                   root.getChildren().add(line1);
+                }
+                System.out.println("id: "+cercle);
+                                //System.out.println("tableauDeCercleSelectionnee: "+CircleSelect.size());
+                                //for (Map.Entry mapentry : CircleSelect.entrySet()) {
+                          // System.out.println("clé: "+mapentry.getKey() 
+                                            //  + " | valeur: " + mapentry.getValue());
+                                            //CircleSelect.clear();
+                       // }
+            }
+        });
+
                 
-                System.out.println(" Lala!"+CircleMap.get(0));
+                System.out.println(" Lala!"+CircleMap);
                 
             }
         });
+     Button b2 = new Button("B2");
+    b2.setId("b2");
+    b2.getStyleClass().add("b2");
+
+    b2.setLayoutY(120);
+        b2.setOnAction(new EventHandler<ActionEvent>() { 
+            @Override
+            public void handle(ActionEvent event) {
+                
+              CircleSelect.clear();
+              b=0;
+                //System.out.println(CircleMap.get(0));
+            }
+        });
+     
+     
+     
     paneGauche.getChildren().add(b1);
+    paneGauche.getChildren().add(b2);
     root.getChildren().add(paneGauche);
     primaryStage.setScene(scene); 
     primaryStage.show();
