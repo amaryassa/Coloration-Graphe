@@ -23,6 +23,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Circle;
 import javafx.scene.shape.Line;
 import javafx.scene.shape.StrokeLineCap;
+import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -42,13 +43,12 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     
   private Text createText(Line line){
           Text text = new Text();
-          double myX= (line.getStartX()+line.getEndX())/2;
-          double myY= (line.getStartY()+line.getEndY())/2;
+          text.xProperty().bind(line.startXProperty().add(line.endXProperty()).divide(2));
+          text.yProperty().bind(line.startYProperty().add(line.endYProperty()).divide(2));
           text.setText("1");
-          text.setWrappingWidth(10);
+          text.setFont(Font.font ("Verdana", 20));
           text.setFill(Color.RED);
-          text.setX(myX);
-          text.setY(myY);
+
     return text;
 
   }
