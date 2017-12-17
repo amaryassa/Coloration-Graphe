@@ -6,8 +6,12 @@
 package theoriedesgraphesm1informatiqueamaryassa;
 
 import java.net.URL;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.application.Application;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -16,6 +20,7 @@ import javafx.scene.Group;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
+import javafx.scene.control.TextField;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.StackPane;
@@ -26,6 +31,7 @@ import javafx.scene.shape.StrokeLineCap;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -36,21 +42,61 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     double orgSceneX, orgSceneY, myX;
     int a=0;
     int b=0;
+    int k=0;
     boolean relie=false;
     Map<Integer,Circle> CircleMap = new HashMap<Integer,Circle>();
 
     Map<Integer,Circle> CircleSelect = new HashMap<Integer,Circle>();
+    Map<Integer,Line> LineMap = new HashMap<Integer,Line>();
     
-  private Text createText(Line line){
+  private Text createText(Line line, String valeur){
           Text text = new Text();
           text.xProperty().bind(line.startXProperty().add(line.endXProperty()).divide(2));
           text.yProperty().bind(line.startYProperty().add(line.endYProperty()).divide(2));
-          text.setText("1");
+          text.setText(valeur);
           text.setFont(Font.font ("Verdana", 20));
           text.setFill(Color.RED);
 
     return text;
 
+  }
+
+    private void sommetOrdonneSelonLeNombreDearrete(Map<Integer,Line> lineMap){
+          
+            String monId="";
+            Integer Tableau[]=new Integer[lineMap.size()*2];
+                        for (Map.Entry mapentry : lineMap.entrySet()) {
+                           monId=monId+lineMap.get(mapentry.getKey()).getId()+"_";
+                       
+                        
+                        }
+ System.out.println("lineMap.size(): "+lineMap.size());
+                  String values[]=monId.split("_");
+ System.out.println("id: "+monId );
+ for (HashMap.Entry entry : CircleMap.entrySet())
+{
+
+        Pattern pattern = Pattern.compile(""+entry.getKey());
+        Matcher  matcher = pattern.matcher(monId);
+         int count = 0;
+        while (matcher.find())
+            count++;
+
+        System.out.println(count); 
+ }
+ /*
+ for (int i=0; i<lineMap.size()*2;i++){
+
+                Tableau[i]=Integer.parseInt(values[i]);
+           System.out.println("tableau: "+Tableau[i]);
+               }
+            System.out.println("--------------");
+
+            Arrays.sort(Tableau);
+             for (int i=0; i<lineMap.size()*2;i++){
+           System.out.println("tableau: "+Tableau[i]);
+               }
+*/
   }
 
 
@@ -99,6 +145,9 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
           line.setId(idLine);
           line.setCursor(Cursor.HAND);
           System.out.println("idLine: "+line.getId());
+
+          LineMap.put(k, line);
+          k++;
       return line;
      }
 
@@ -151,9 +200,12 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
                             @Override
                               public void handle(MouseEvent k) {
                                 System.out.println("id: line select "+line1);
-                                
-                              Text text1 =   createText(line1);
+                                String inputValue = JOptionPane.showInputDialog("Entrez une valeur");
+                              Text text1 =   createText(line1, inputValue);
+                              
                               root.getChildren().add(text1);
+                              
+                              
                                 
                               }});
                             
@@ -204,6 +256,9 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
             @Override
             public void handle(ActionEvent event) {
                 
+
+                System.out.println("lineMap: "+LineMap);
+                sommetOrdonneSelonLeNombreDearrete(LineMap);
             // CircleMap.get(0).setFill(Color.BLACK);
              //CircleMap.get(1).setFill(Color.GREEN);
              //CircleMap.get(2).setFill(Color.YELLOW);
@@ -214,7 +269,7 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
      
      
-
+   
     paneGauche.getChildren().add(AjouterS);
      paneGauche.getChildren().add(SupprmierS);
     paneGauche.getChildren().add(AjouterA);
@@ -223,7 +278,10 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
     root.getChildren().add(paneGauche);
 
+     TextField txtNum = new TextField();
     
+    txtNum.setMaxWidth(50);
+     root.getChildren().add(txtNum);
     primaryStage.setScene(scene); 
     primaryStage.show();
   } 
