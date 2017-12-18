@@ -48,6 +48,7 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
     Map<Integer,Circle> CircleSelect = new HashMap<Integer,Circle>();
     Map<Integer,Line> LineMap = new HashMap<Integer,Line>();
+     Map<Integer,Integer> CircleOrderByArret = new HashMap<Integer,Integer>();
     
   private Text createText(Line line, String valeur){
           Text text = new Text();
@@ -64,11 +65,11 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     private void sommetOrdonneSelonLeNombreDearrete(Map<Integer,Line> lineMap){
           
             String monId="";
-            Integer Tableau[]=new Integer[lineMap.size()*2];
+            Integer TableauOrgine[]=new Integer[CircleMap.size()];
+             Integer TableauTempo[]=new Integer[CircleMap.size()];
+               Integer TableauCercleOrdonnee[]=new Integer[CircleMap.size()];
                         for (Map.Entry mapentry : lineMap.entrySet()) {
                            monId=monId+lineMap.get(mapentry.getKey()).getId()+"_";
-                       
-                        
                         }
  System.out.println("lineMap.size(): "+lineMap.size());
                   String values[]=monId.split("_");
@@ -81,9 +82,42 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
          int count = 0;
         while (matcher.find())
             count++;
-
-        System.out.println(count); 
+        
+int numCercle=(int)entry.getKey();
+ TableauOrgine[numCercle]=count;
+ TableauTempo[numCercle]=count;
+        System.out.println(entry.getKey()+" "+count);
+      //  CircleOrderByArret.put(numCercle,count );
+        
  }
+
+    Arrays.sort(TableauTempo, Collections.reverseOrder());
+             for (int i=0; i<CircleMap.size();i++){
+           System.out.println("TableauOrgine: "+TableauOrgine[i]);
+             }
+              System.out.print("-----------------------");
+           for (int i=0; i<CircleMap.size();i++){
+          System.out.println("TableauTempo: "+TableauTempo[i]);
+               }
+           
+             
+             for (int i=0; i<CircleMap.size();i++){
+                 int j=0;
+                 while(TableauTempo[i]!=TableauOrgine[j] && j<CircleMap.size() ){
+                     j++;
+                 }
+                 TableauOrgine[j]=-999;
+                 TableauCercleOrdonnee[i]=j;
+             }
+              System.out.print("-----------------------");
+                for (int i=0; i<CircleMap.size();i++){
+          System.out.println("TableauCercleOrdonnee: "+TableauCercleOrdonnee[i]);
+               }
+           
+             
+             
+             
+             
  /*
  for (int i=0; i<lineMap.size()*2;i++){
 
@@ -259,6 +293,8 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
                 System.out.println("lineMap: "+LineMap);
                 sommetOrdonneSelonLeNombreDearrete(LineMap);
+                
+              //   System.out.println("mon ordre: "+CircleOrderByArret);
             // CircleMap.get(0).setFill(Color.BLACK);
              //CircleMap.get(1).setFill(Color.GREEN);
              //CircleMap.get(2).setFill(Color.YELLOW);
