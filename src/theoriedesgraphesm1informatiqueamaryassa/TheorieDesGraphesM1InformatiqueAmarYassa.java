@@ -10,6 +10,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Random;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 import javafx.application.Application;
@@ -40,14 +41,19 @@ import javax.swing.JOptionPane;
 
 public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     double orgSceneX, orgSceneY, myX;
+    private final Random rng = new Random();
     int a=0;
     int b=0;
     int k=0;
     boolean relie=false;
-    Map<Integer,Circle> CircleMap = new HashMap<Integer,Circle>();
-
+private Color randomColor() {
+        return new Color(rng.nextDouble(), rng.nextDouble(), rng.nextDouble(), 1);
+    }
+ Map<Integer,Circle> CircleMap = new HashMap<Integer,Circle>();
     Map<Integer,Circle> CircleSelect = new HashMap<Integer,Circle>();
     Map<Integer,Line> LineMap = new HashMap<Integer,Line>();
+    
+    Map<Integer,Integer> SommetColoree = new HashMap<Integer,Integer>();
      Map<Integer,Integer> CircleOrderByArret = new HashMap<Integer,Integer>();
     
   private Text createText(Line line, String valeur){
@@ -163,10 +169,17 @@ int numCercle=(int)entry.getKey();
             System.out.println("");
             }
        
-     for(int i=0;i<1;i++){
+       for(int j=0;j<CircleMap.size();j++){
+        SommetColoree.put(j,0);
+       }
+      
+       System.out.println("SommetColor"+SommetColoree); 
+     for(int i=0;i<CircleMap.size();i++){
+         Color couleur=randomColor();
             for(int j=0;j<CircleMap.size();j++){
-                if(maMatrice[TableauCercleOrdonnee[i]][j]==0){
-                CircleMap.get(j).setFill(Color.GREEN);
+                if(maMatrice[TableauCercleOrdonnee[i]][j]==0 && SommetColoree.get(j)!=1){
+                CircleMap.get(j).setFill(couleur);
+                SommetColoree.put(j, 1);
                 
                 }
             }
