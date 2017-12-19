@@ -64,12 +64,30 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
     private void sommetOrdonneSelonLeNombreDearrete(Map<Integer,Line> lineMap){
           
+        
+        
+            int maMatrice[][] = new int[CircleMap.size()][CircleMap.size()];
+           
+                for(int i=0;i<CircleMap.size();i++){
+            for(int j=0;j<CircleMap.size();j++){
+            maMatrice[i][j]=0;}
+            }
+            for(int i=0;i<CircleMap.size();i++){
+            for(int j=0;j<CircleMap.size();j++){
+            System.out.print(" "+maMatrice[i][j]);}
+            System.out.println("");
+            }
+            
+        System.out.println(Arrays.toString(maMatrice));
             String monId="";
+            String allId="";
             Integer TableauOrgine[]=new Integer[CircleMap.size()];
              Integer TableauTempo[]=new Integer[CircleMap.size()];
                Integer TableauCercleOrdonnee[]=new Integer[CircleMap.size()];
                         for (Map.Entry mapentry : lineMap.entrySet()) {
                            monId=monId+lineMap.get(mapentry.getKey()).getId()+"_";
+                           allId=allId+lineMap.get(mapentry.getKey()).getId()+",";
+                           
                         }
  System.out.println("lineMap.size(): "+lineMap.size());
                   String values[]=monId.split("_");
@@ -115,22 +133,40 @@ int numCercle=(int)entry.getKey();
                }
            
              
+                
+                
+                
+             System.out.println("allId: "+allId);
+             allId=allId.substring(0,allId.length()-1);
+             System.out.println("allId: "+allId);
+        
+            String []  values2=allId.split(",");
+            
+             System.out.println("values2.length: "+values2.length);
+            System.out.println("------------MAt Avant-----------");
+              for(int i=0;i<CircleMap.size();i++){
+            for(int j=0;j<CircleMap.size();j++){
+            System.out.print(" "+maMatrice[i][j]);}
+            System.out.println("");
+            }
+         for(int i=0; i< values2.length ;i++){
+        String [] values3= values2[i].split("_");
+          int monI= Integer.parseInt(values3[0]);
+          int monJ=Integer.parseInt(values3[1]);
+          maMatrice[monI][monJ]=1;
+          maMatrice[monJ][monI]=1;
+         }
+       System.out.println("-----------Mat Après------------");      
+       for(int i=0;i<CircleMap.size();i++){
+            for(int j=0;j<CircleMap.size();j++){
+            System.out.print(" "+maMatrice[i][j]);}
+            System.out.println("");
+            }
+            
+            
              
              
-             
- /*
- for (int i=0; i<lineMap.size()*2;i++){
 
-                Tableau[i]=Integer.parseInt(values[i]);
-           System.out.println("tableau: "+Tableau[i]);
-               }
-            System.out.println("--------------");
-
-            Arrays.sort(Tableau);
-             for (int i=0; i<lineMap.size()*2;i++){
-           System.out.println("tableau: "+Tableau[i]);
-               }
-*/
   }
 
 
