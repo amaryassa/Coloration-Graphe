@@ -162,7 +162,16 @@ int numCercle=(int)entry.getKey();
             System.out.print(" "+maMatrice[i][j]);}
             System.out.println("");
             }
-            
+       
+     for(int i=0;i<1;i++){
+            for(int j=0;j<CircleMap.size();j++){
+                if(maMatrice[TableauCercleOrdonnee[i]][j]==0){
+                CircleMap.get(j).setFill(Color.GREEN);
+                
+                }
+            }
+           
+            }
             
              
              
