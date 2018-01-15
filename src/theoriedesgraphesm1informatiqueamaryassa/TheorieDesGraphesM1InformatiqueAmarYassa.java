@@ -46,12 +46,16 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
     int a=0;
     int b=0;
     int k=0;
+    int nombreDeCouleur;
+    
     boolean relie=false;
     Map<Integer,Circle> CircleMap = new HashMap<Integer,Circle>();
     Map<Integer,Circle> CircleSelect = new HashMap<Integer,Circle>();
     Map<Integer,Line> LineMap = new HashMap<Integer,Line>();
     Map<Integer,Integer> SommetColoree = new HashMap<Integer,Integer>();
     Map<Integer,Integer> CircleOrderByArret = new HashMap<Integer,Integer>();
+    Map<Integer,Integer> SommetsQuOnVaColorerTempo = new HashMap<Integer,Integer>();
+    Map<Integer,Integer> SommetsQuOnVaSupprimerdanslaColoreTempo = new HashMap<Integer,Integer>();
     
     private Color randomColor() {
           return new Color(rng.nextDouble(), rng.nextDouble(), rng.nextDouble(), 1);
@@ -77,8 +81,9 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
             }
    }
     private void   AfficheTable(Integer [] tableau, int taille){
+        System.out.print("Tableau:    ");
      for (int i=0; i<taille;i++){
-         System.out.print("Tableau:    ");
+         
           System.out.print(" "+tableau[i]);
                }
      System.out.println("");
@@ -173,10 +178,17 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
             System.out.println("------------MAt Avant-----------");
             AfficherMatrice(maMatrice,CircleMap.size());
             if(allId.length()>0){
+                 System.out.println("------------ici-----------");
                 maMatrice=RemplirLaMatriceAvecLesCouleurs(maMatrice,allId,CircleMap.size() )  ;
             }        
             
            for(int i=0;i<CircleMap.size();i++){
+           	   SommetsQuOnVaColorerTempo.clear();
+           	   SommetsQuOnVaSupprimerdanslaColoreTempo.clear();
+           	   int z=0;
+			   int mm=0;
+			   nombreDeCouleur=0;
+
                if(allId.length()>0){
                 k=TableauCercleOrdonnee[i];
                }else{
@@ -185,11 +197,60 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
                Color couleur=randomColor();
                   for(int j=0;j<CircleMap.size();j++){
                       if(maMatrice[k][j]==0 && SommetColoree.get(j)!=1){
-                        CircleMap.get(j).setFill(couleur);
-                        SommetColoree.put(j, 1);
+                      		SommetsQuOnVaColorerTempo.put(z, j);
+                                z++;
                       }
-                  }     
+                  }
+                  	System.out.print("avant"+k+": "+SommetsQuOnVaColorerTempo+" ");
+
+                  		if (SommetsQuOnVaColorerTempo.size()>0){
+                  			for(int h=1; h<SommetsQuOnVaColorerTempo.size(); h++){
+
+                  				if(maMatrice[SommetsQuOnVaColorerTempo.get(h)][SommetsQuOnVaColorerTempo.get(h-1)] ==1){
+                  						
+                  						SommetsQuOnVaSupprimerdanslaColoreTempo.put(mm,h);
+                  						mm++;
+
+                  						// SommetsQuOnVaColorerTempo.remove(h);
+                  				}
+                  			}
+
+
+                  			for(int dd=0; dd<SommetsQuOnVaSupprimerdanslaColoreTempo.size(); dd++){
+
+                  					SommetsQuOnVaColorerTempo.remove(SommetsQuOnVaSupprimerdanslaColoreTempo.get(dd));
+
+									// System.out.println("SommetsQuOnVaSupprimerdanslaColoreTempo.get(h):"+SommetsQuOnVaSupprimerdanslaColoreTempo.get(h)+" ");
+                  			}
+                  				
+
+								System.out.println("SommetsQuOnVaSupprimerdanslaColoreTempo"+SommetsQuOnVaSupprimerdanslaColoreTempo+" ");
+                  			
+                  		}
+
+								// System.out.println("SommetsQuOnVaColorerTempo.size()"+SommetsQuOnVaColorerTempo.size()+" ");
+
+                  			for(int n=0; n<(SommetsQuOnVaColorerTempo.size()); n++){
+
+                  				if (SommetsQuOnVaColorerTempo.get(n) != null){
+								System.out.println("SommetsQuOnVaColorerTempo.get(n):"+SommetsQuOnVaColorerTempo.get(n)+" ");
+                  				int leSommet=SommetsQuOnVaColorerTempo.get(n);
+                  				if(SommetColoree.get(leSommet)!=1){
+                  				CircleMap.get(leSommet).setFill(couleur);
+                  				SommetColoree.put(leSommet, 1);
+                  				}
+                  				}
+                  			}
+
+                  			if (!SommetsQuOnVaColorerTempo.isEmpty()){
+                  				nombreDeCouleur++;
+                  				
+                  			}
+
+ 
+                  		
               }
+              System.out.println("nombreDeCouleur:"+nombreDeCouleur+" ");
     }
 
     private Circle createCircle(double x, double y, double r, Color color){
@@ -239,7 +300,6 @@ public class TheorieDesGraphesM1InformatiqueAmarYassa extends Application {
 
           return line;
      }
-
 
     @Override
     public void start(Stage primaryStage) {
